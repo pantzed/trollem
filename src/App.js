@@ -38,10 +38,38 @@ function Preview(props) {
   );
 }
 
+function Utilities(props) {
+  return (
+    <div className="row">
+      <div className="col-8 d-flex align-items-end">
+        <form>
+          <div className="form-group">
+            <label htmlFor="filter"></label>
+            <input type="text" name="filter" className="form-control form-control-sm" placeholder="Filter" />
+          </div>
+        </form>
+        <div className="form-group dropdown pl-3">
+          <a className="dropdown-toggle" href="/" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By Title
+          </a>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a className="dropdown-item" href="/">Author</a>
+            <a className="dropdown-item" href="/">Popularity</a>
+            <a className="dropdown-item" href="/">Post Date</a>
+          </div>
+        </div>
+      </div>
+      <div className="col-4 d-flex align-items-center justify-content-end">
+        <button type="button" className="m-0 btn btn-primary btn-sm">New Post</button>
+      </div>
+    </div>
+  );
+}
+
 class Post extends React.Component {
   renderPost(post, index) {
     return (
-      <div className="row mt-3 bg-light border rounded" key={index}>
+      <div className="row mt-1 bg-light border rounded" key={index}>
         <div className="col-xs-12 col-sm-4 col-lg-3">
           <Image imgSrc={post.imgSrc}/>
         </div>
@@ -69,7 +97,6 @@ class Post extends React.Component {
   }
 }
 class App extends Component {
-  
   render() {
     return (
       <div>
@@ -77,8 +104,9 @@ class App extends Component {
           <span className="navbar-brand mb-0 h1">Trollem</span>
         </nav>
         <div className="container-fluid">
-          <div className="row pb-5 pt-5 d-flex justify-content-center">
+          <div className="row pb-5 pt-2 d-flex justify-content-center">
             <div className="col-11">
+              <Utilities />
               <Post posts={posts}/>
             </div>
           </div>
@@ -87,31 +115,5 @@ class App extends Component {
     );
   }
 }
-
-/*
-<! -- Filter form -->
-
-<div className="row mt-5">
-  <div className="col-12 d-flex align-items-center justify-content-between">
-    <form>
-      <div className="form-group">
-        <label htmlFor="filter"></label>
-        <input type="text" name="filter" className="form-control form-control-sm" placeholder="Filter" />
-      </div>
-      <div className="form-group dropdown">
-      <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown link
-      </a>
-      <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a className="dropdown-item" href="#">Action</a>
-        <a className="dropdown-item" href="#">Another action</a>
-        <a className="dropdown-item" href="#">Something else here</a>
-      </div>
-    </div>
-    </form>
-    <button type="button" className="m-0 btn btn-primary btn-sm">New Post</button>
-  </div>
-</div>
-*/
 
 export default App;
