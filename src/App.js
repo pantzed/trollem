@@ -1,21 +1,85 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import stars from './stars.jpg';
 import './App.css';
 
-class App extends Component {
+
+function Comment(props) {
+  return (
+    <div className="col-12">
+    <p>{props.comment}</p>
+    </div>
+  )
+}
+class Post extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="row mt-5 bg-light border rounded">
+        <div className="col-xs-12 col-sm-4 col-lg-3">
+          <img className="img-fluid rounded p-3" src={stars} alt="Moab arch and night sky" />
+        </div>
+        <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
+          <header className="font-weight-bold">
+            <span>Star Gazing | UP:DOWN 3</span>
+          </header>
+          <p> 
+            Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
+            boudin meatball biltong tail andouille leberkas cupim 
+            bresaola spare ribs hamburger short loin.
+          </p>
+          <span> 1 Day ago | 0 comments </span>
+          <Comment comment=">>> this is a comment!" />
+        </div>
+        <div className="col-xs-12 col-sm-2 p-3 text-right">
+          <span>Troller #1</span>
+        </div>
       </div>
     );
   }
 }
+class App extends Component {
+
+  render() {
+    return (
+      <div>
+        <nav className="navbar navbar-light bg-light border-bottom">
+          <span className="navbar-brand mb-0 h1">Trollem</span>
+        </nav>
+        <div className="container-fluid">
+          <div className="row d-flex justify-content-center">
+            <div className="col-11">
+              <Post />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+/*
+<! -- Filter form -->
+
+<div className="row mt-5">
+  <div className="col-12 d-flex align-items-center justify-content-between">
+    <form>
+      <div className="form-group">
+        <label htmlFor="filter"></label>
+        <input type="text" name="filter" className="form-control form-control-sm" placeholder="Filter" />
+      </div>
+      <div className="form-group dropdown">
+      <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown link
+      </a>
+      <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a className="dropdown-item" href="#">Action</a>
+        <a className="dropdown-item" href="#">Another action</a>
+        <a className="dropdown-item" href="#">Something else here</a>
+      </div>
+    </div>
+    </form>
+    <button type="button" className="m-0 btn btn-primary btn-sm">New Post</button>
+  </div>
+</div>
+*/
 
 export default App;
