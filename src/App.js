@@ -1,28 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-
-const posts= [
-  {
-    previewText: `
-      Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
-      boudin meatball biltong tail andouille leberkas cupim 
-      bresaola spare ribs hamburger short loin.`,
-    title: `Star Gazing`,
-    author: `Troller #1`,
-    imgSrc: `https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350`,
-    imgAlt: `Moab arch and night sky`,
-  },
-  {
-  previewText: `
-    Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
-    boudin meatball biltong tail andouille leberkas cupim 
-    bresaola spare ribs hamburger short loin.`,
-  title: `Markers and Shit`,
-  author: `Massive Troll`,
-  imgSrc: `https://images.pexels.com/photos/1152665/pexels-photo-1152665.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350`,
-  imgAlt: `Colored markers`,
-  },
-];
+import posts from './data.js';
 
 function Image(props) {
   return (
@@ -63,7 +41,7 @@ function Preview(props) {
 class Post extends React.Component {
   renderPost(post, index) {
     return (
-      <div className="row mt-5 bg-light border rounded" key={index}>
+      <div className="row mt-3 bg-light border rounded" key={index}>
         <div className="col-xs-12 col-sm-4 col-lg-3">
           <Image imgSrc={post.imgSrc}/>
         </div>
@@ -99,7 +77,7 @@ class App extends Component {
           <span className="navbar-brand mb-0 h1">Trollem</span>
         </nav>
         <div className="container-fluid">
-          <div className="row d-flex justify-content-center">
+          <div className="row pb-5 pt-5 d-flex justify-content-center">
             <div className="col-11">
               <Post posts={posts}/>
             </div>
