@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 
-const previewText = `
-  Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
-  boudin meatball biltong tail andouille leberkas cupim 
-  bresaola spare ribs hamburger short loin.
-`;
-const title = `Star Gazing`;
-const author = `Troller #1`;
-const imgSrc = `https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350`;
-const imgAlt = `Moab arch and night sky`;
-
 const postData = {
-  // Move variables above to postData obj and pass to <Posts /> as "prop"
+  previewText: `
+    Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
+    boudin meatball biltong tail andouille leberkas cupim 
+    bresaola spare ribs hamburger short loin.`,
+  title: `Star Gazing`,
+  author: `Troller #1`,
+  imgSrc: `https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350`,
+  imgAlt: `Moab arch and night sky`,
 }
 
 function Image(props) {
@@ -55,16 +52,16 @@ function Post(props) {
   return (
     <div className="row mt-5 bg-light border rounded">
       <div className="col-xs-12 col-sm-4 col-lg-3">
-        <Image imgSrc={imgSrc} imgAlt={imgAlt} />
+        <Image imgSrc={props.post.imgSrc} imgAlt={props.post.imgAlt} />
       </div>
       <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
-        <Title title={title} />
-        <Preview previewText={previewText} />
+        <Title title={props.post.title} />
+        <Preview previewText={props.post.previewText} />
         <span> 1 Day ago | 0 comments </span>
         <Comment comment=">>> this is a comment!" />
       </div>
       <div className="col-xs-12 col-sm-2 p-3 text-right">
-        <Author author={author} />
+        <Author author={props.post.author} />
       </div>
     </div>
   );
@@ -79,7 +76,7 @@ class App extends Component {
         <div className="container-fluid">
           <div className="row d-flex justify-content-center">
             <div className="col-11">
-              <Post />
+              <Post post={postData}/>
             </div>
           </div>
         </div>
