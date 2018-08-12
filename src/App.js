@@ -38,38 +38,82 @@ function Preview(props) {
   );
 }
 
-function Utilities(props) {
+function CreatePost() {
   return (
-    <div className="row">
-      <div className="col-8 d-flex align-items-end">
-        <form>
-          <div className="form-group">
-            <label htmlFor="filter"></label>
-            <input type="text" name="filter" className="form-control form-control-sm" placeholder="Filter" />
+      <form>
+        <div className="form-group">
+          <label htmlFor="title" className="font-weight-bold">Title</label>
+          <input type="text" name="title" className="form-control form-control-sm" required/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="body" className="font-weight-bold">Body</label>
+          <input type="text" name="body" className="form-control form-control-sm" required/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="author" className="font-weight-bold">Author</label>
+          <input type="text" name="author" className="form-control form-control-sm" required/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="imgUrl" className="font-weight-bold">Img URL</label>
+          <input type="text" name="imgUrl" className="form-control form-control-sm" required/>
+        </div>
+        <button type="submit" className="btn btn-primary btn-sm" disabled="true">Create Post</button>
+      </form>
+  );
+}
+
+class Utilities extends React.Component {
+  constructor() {
+    super()
+    this.state ={
+      isHidden: true,
+    }
+  }
+
+  toggleHidden() {
+    this.setState({
+      isHidden: !this.state.isHidden
+    })
+  }
+  
+  render() {
+    return (
+      <div className="row">
+        <div className="col-8 d-flex align-items-end">
+          <form>
+            <div className="form-group">
+              <label htmlFor="filter"></label>
+              <input type="text" name="filter" className="form-control form-control-sm" placeholder="Filter" />
+            </div>
+          </form>
+          <div className="form-group dropdown pl-3">
+            <a className="dropdown-toggle" href="/" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort By Title
+            </a>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a className="dropdown-item" href="/">Author</a>
+              <a className="dropdown-item" href="/">Popularity</a>
+              <a className="dropdown-item" href="/">Post Date</a>
+            </div>
           </div>
-        </form>
-        <div className="form-group dropdown pl-3">
-          <a className="dropdown-toggle" href="/" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort By Title
-          </a>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a className="dropdown-item" href="/">Author</a>
-            <a className="dropdown-item" href="/">Popularity</a>
-            <a className="dropdown-item" href="/">Post Date</a>
+        </div>
+        <div className="col-4 d-flex align-items-center justify-content-end">
+          <button type="button" className="m-0 btn btn-primary btn-sm" onClick={this.toggleHidden.bind(this)}>New Post</button>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            {!this.state.isHidden && <CreatePost />}
           </div>
         </div>
       </div>
-      <div className="col-4 d-flex align-items-center justify-content-end">
-        <button type="button" className="m-0 btn btn-primary btn-sm">New Post</button>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 class Post extends React.Component {
   renderPost(post, index) {
     return (
-      <div className="row mt-1 bg-light border rounded" key={index}>
+      <div className="row mt-2 bg-light border rounded" key={index}>
         <div className="col-xs-12 col-sm-4 col-lg-3">
           <Image imgSrc={post.imgSrc}/>
         </div>
