@@ -2,39 +2,68 @@ import React, { Component } from 'react';
 import stars from './stars.jpg';
 import './App.css';
 
+const previewText = `
+  Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
+  boudin meatball biltong tail andouille leberkas cupim 
+  bresaola spare ribs hamburger short loin.
+`;
+const title = `Star Gazing`;
+const author = `Troller #1`;
+const imgSrc = stars;
+const imgAlt = `Moab arch and night sky`;
+
+function Image(props) {
+  return (
+    <img className="img-fluid rounded p-3" src={props.imgSrc} alt={props.imgAlt} />
+  );
+}
+function Author(props) {
+  return (
+    <span>{props.author}</span>
+  );
+}
+
+function Title(props) {
+  return (
+    <header className="font-weight-bold">
+      <span>{props.title}</span>
+    </header>
+  );
+}
 
 function Comment(props) {
   return (
     <div className="col-12">
     <p>{props.comment}</p>
     </div>
-  )
+  );
 }
-class Post extends Component {
-  render() {
-    return (
-      <div className="row mt-5 bg-light border rounded">
-        <div className="col-xs-12 col-sm-4 col-lg-3">
-          <img className="img-fluid rounded p-3" src={stars} alt="Moab arch and night sky" />
-        </div>
-        <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
-          <header className="font-weight-bold">
-            <span>Star Gazing | UP:DOWN 3</span>
-          </header>
-          <p> 
-            Bacon ipsum dolor amet cow tongue prosciutto meatloaf, 
-            boudin meatball biltong tail andouille leberkas cupim 
-            bresaola spare ribs hamburger short loin.
-          </p>
-          <span> 1 Day ago | 0 comments </span>
-          <Comment comment=">>> this is a comment!" />
-        </div>
-        <div className="col-xs-12 col-sm-2 p-3 text-right">
-          <span>Troller #1</span>
-        </div>
+
+function Preview(props) {
+  return (
+  <p> 
+    {props.previewText}
+  </p>
+  );
+}
+
+function Post(props) {
+  return (
+    <div className="row mt-5 bg-light border rounded">
+      <div className="col-xs-12 col-sm-4 col-lg-3">
+        <Image imgSrc={imgSrc} imgAlt={imgAlt} />
       </div>
-    );
-  }
+      <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
+        <Title title={title} />
+        <Preview previewText={previewText} />
+        <span> 1 Day ago | 0 comments </span>
+        <Comment comment=">>> this is a comment!" />
+      </div>
+      <div className="col-xs-12 col-sm-2 p-3 text-right">
+        <Author author={author} />
+      </div>
+    </div>
+  );
 }
 class App extends Component {
 
