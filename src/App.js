@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import stars from './stars.jpg';
 import './App.css';
 
 const previewText = `
@@ -9,14 +8,19 @@ const previewText = `
 `;
 const title = `Star Gazing`;
 const author = `Troller #1`;
-const imgSrc = stars;
+const imgSrc = `https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350`;
 const imgAlt = `Moab arch and night sky`;
+
+const postData = {
+  // Move variables above to postData obj and pass to <Posts /> as "prop"
+}
 
 function Image(props) {
   return (
     <img className="img-fluid rounded p-3" src={props.imgSrc} alt={props.imgAlt} />
   );
 }
+
 function Author(props) {
   return (
     <span>{props.author}</span>
@@ -66,7 +70,6 @@ function Post(props) {
   );
 }
 class App extends Component {
-
   render() {
     return (
       <div>
