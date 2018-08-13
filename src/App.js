@@ -22,18 +22,10 @@ function Title(props) {
   );
 }
 
-function Comment(props) {
-  return (
-    <div className="col-12">
-    <p>{props.comment}</p>
-    </div>
-  );
-}
-
-function Preview(props) {
+function Body(props) {
   return (
   <p> 
-    {props.previewText}
+    {props.body}
   </p>
   );
 }
@@ -61,6 +53,38 @@ function CreatePost() {
       </form>
   );
 }
+
+function Comments(props) {
+  return (
+    <ul>
+      <li>Comment</li>
+    </ul>
+  );
+}
+// class Comments extends React.Component {
+//   constructor(props) {
+//     super();
+//     this.comments = props;
+//     console.log(this);
+//   }
+
+//   renderComments(comment, index) {
+//     return (
+//       <li>{comment}</li>
+//     );
+//   }
+
+//   render() {
+//     const commentList = this.comments.map(comment => {
+//       return this.renderComment(comment);
+//     })
+//     return (
+//       <div className="col-12">
+//         <ul>{commentList}</ul>
+//       </div>
+//     );
+//   }
+// }
 
 class Utilities extends React.Component {
   constructor() {
@@ -110,36 +134,49 @@ class Utilities extends React.Component {
   }
 }
 
+function PostList(props){
+
+  return (
+    props.posts.map((post, index) => <Post author={post.author} body={post.body} title={post.title} img={post.imgSrc} comments={post.comments} key={index}/>)
+  )
+}
+
 class Post extends React.Component {
-  renderPost(post, index) {
+
+  constructor() {
+    super()
+    this.state ={
+      isHidden: true,
+    }
+  }
+
+  toggleHidden() {
+    this.setState({
+      isHidden: !this.state.isHidden
+    })
+  }
+
+  render() {
+    console.log(this);
     return (
-      <div className="row mt-2 bg-light border rounded" key={index}>
+      <div className="row mt-2 bg-light border rounded" key={this.props.key}>
         <div className="col-xs-12 col-sm-4 col-lg-3">
-          <Image imgSrc={post.imgSrc}/>
+          <Image imgSrc={this.props.img}/>
         </div>
         <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
-          <Title title={post.title}/>
-          <Preview previewText={post.previewText}/>
-          <span> 1 Day ago | 0 comments </span>
-          <Comment comment=">>> this is a comment!" />
+          <Title title={this.props.title}/>
+          <Body body={this.props.body}/>
+          <span> 1 Day ago | 0 <a href="/" onClick={this.toggleHidden.bind(this)}>Comments</a> </span>
+          {!this.state.isHidden && <Comments comments={this.props.comments} />}
         </div>
         <div className="col-xs-12 col-sm-2 p-3 text-right">
-          <Author author={post.author}/>
+          <Author author={this.props.author}/>
         </div>
-      </div>
-    );
-  }
-  render() {
-    const postList = posts.map((post, index) => {
-      return this.renderPost(post, index);
-    });
-    return (
-      <div>
-        {postList}
       </div>
     );
   }
 }
+
 class App extends Component {
   render() {
     return (
@@ -151,7 +188,7 @@ class App extends Component {
           <div className="row pb-5 pt-2 d-flex justify-content-center">
             <div className="col-11">
               <Utilities />
-              <Post posts={posts}/>
+              <PostList posts={posts}/>
             </div>
           </div>
         </div>
