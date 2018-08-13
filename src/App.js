@@ -135,7 +135,7 @@ function CommentForm() {
 
 function CommentList(props) {
   return (
-    props.comments.map(comment => <li>{comment}</li>)
+    props.comments.map((comment, index) => <li key={index}>{comment}</li>)
   );
 }
 
