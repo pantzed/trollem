@@ -54,38 +54,6 @@ function CreatePost() {
   );
 }
 
-function Comments(props) {
-  return (
-    <ul>
-      <li>Comment</li>
-    </ul>
-  );
-}
-// class Comments extends React.Component {
-//   constructor(props) {
-//     super();
-//     this.comments = props;
-//     console.log(this);
-//   }
-
-//   renderComments(comment, index) {
-//     return (
-//       <li>{comment}</li>
-//     );
-//   }
-
-//   render() {
-//     const commentList = this.comments.map(comment => {
-//       return this.renderComment(comment);
-//     })
-//     return (
-//       <div className="col-12">
-//         <ul>{commentList}</ul>
-//       </div>
-//     );
-//   }
-// }
-
 class Utilities extends React.Component {
   constructor() {
     super()
@@ -134,43 +102,83 @@ class Utilities extends React.Component {
   }
 }
 
-function PostList(props){
-
+function Comments(props) {
+  console.log(props);
   return (
-    props.posts.map((post, index) => <Post author={post.author} body={post.body} title={post.title} img={post.imgSrc} comments={post.comments} key={index}/>)
-  )
+    <div>
+      <ul>
+        <CommentList comments={props.comments}/>
+      </ul>
+      <form>
+        <div className="form-group">
+          <input type="text" className="form-control" placeholder="comment here!" />
+        </div>
+        <button type="submit" className="btn btn-primary btn-sm">Add Comment</button>
+      </form>
+    </div>
+  );
+}
+
+function CommentList(props) {
+  return (
+    props.comments.map(comment => <li>{comment}</li>)
+  );
+}
+
+function PostList(props){
+  return (
+    props.posts.map((post, index) => <Post post={post} key={index}/>)
+  );
 }
 
 class Post extends React.Component {
 
   constructor() {
     super()
-    this.state ={
+    this.state = {
       isHidden: true,
-    }
+    };
+    this.date = Date.now();
   }
 
   toggleHidden() {
     this.setState({
       isHidden: !this.state.isHidden
-    })
+    });
+  }
+
+  calculateDate(postDate) {
+    let daysSincePost = Math.floor((Date.now() - postDate) * Number.parseFloat(1.15741e-8));
+    return daysSincePost;
+  }
+
+  pluralize(word, n) {
+    let singluar = ` ${word}`;
+    let pluralized = ` ${word}s`;
+    if (n === 1) {
+      return singluar
+    }
+    return pluralized;
   }
 
   render() {
-    console.log(this);
     return (
       <div className="row mt-2 bg-light border rounded" key={this.props.key}>
         <div className="col-xs-12 col-sm-4 col-lg-3">
-          <Image imgSrc={this.props.img}/>
+          <Image imgSrc={this.props.post.imgSrc}/>
         </div>
         <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
-          <Title title={this.props.title}/>
-          <Body body={this.props.body}/>
-          <span> 1 Day ago | 0 <a href="/" onClick={this.toggleHidden.bind(this)}>Comments</a> </span>
-          {!this.state.isHidden && <Comments comments={this.props.comments} />}
+          <Title title={this.props.post.title}/>
+          <Body body={this.props.post.body}/>
+          <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.props.post.comments.length} 
+            <span className="comment-cursor text-primary" onClick={this.toggleHidden.bind(this)}>
+              {this.pluralize('comment',this.props.post.comments.length)}
+            </span>
+          </span>
+          {this.state.isHidden ? null : <Comments comments={this.props.post.comments}/>}
         </div>
         <div className="col-xs-12 col-sm-2 p-3 text-right">
-          <Author author={this.props.author}/>
+          <Author author={this.props.post.author}/>
         </div>
       </div>
     );
