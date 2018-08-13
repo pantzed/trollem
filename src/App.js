@@ -32,33 +32,49 @@ function Body(props) {
 
 function CreatePost() {
   return (
-      <form>
-        <div className="form-group">
-          <label htmlFor="title" className="font-weight-bold">Title</label>
-          <input type="text" name="title" className="form-control form-control-sm" required/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="body" className="font-weight-bold">Body</label>
-          <input type="text" name="body" className="form-control form-control-sm" required/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="author" className="font-weight-bold">Author</label>
-          <input type="text" name="author" className="form-control form-control-sm" required/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="imgUrl" className="font-weight-bold">Img URL</label>
-          <input type="text" name="imgUrl" className="form-control form-control-sm" required/>
-        </div>
-        <button type="submit" className="btn btn-primary btn-sm" disabled="true">Create Post</button>
-      </form>
+    <div>
+      <div className="form-group">
+        <label htmlFor="title" className="font-weight-bold">Title</label>
+        <input type="text" name="title" className="form-control form-control-sm" required/>
+      </div>
+      <div className="form-group">
+        <label htmlFor="body" className="font-weight-bold">Body</label>
+        <input type="text" name="body" className="form-control form-control-sm" required/>
+      </div>
+      <div className="form-group">
+        <label htmlFor="author" className="font-weight-bold">Author</label>
+        <input type="text" name="author" className="form-control form-control-sm" required/>
+      </div>
+      <div className="form-group">
+        <label htmlFor="imgUrl" className="font-weight-bold">Img URL</label>
+        <input type="url" name="imgUrl" className="form-control form-control-sm" required/>
+      </div>
+    </div>
   );
 }
 
 class Utilities extends React.Component {
   constructor(props) {
     super(props)
-    this.state ={
+    this.state = {
       isHidden: true,
+      submitButton: false,
+    }
+  }
+
+  handleChange(e) {
+    let formValidity = true;
+    let inputState = Array.from(e.currentTarget.querySelectorAll('input'));
+    let inputValidity = inputState.map(input => {
+      return input.validity.valid;
+    });
+    inputValidity.forEach(bool => {
+      if (bool === false) {
+        formValidity = false;
+      }
+    })
+    if (formValidity === true) {
+      this.setState({submitButton: true});
     }
   }
 
@@ -94,7 +110,11 @@ class Utilities extends React.Component {
         </div>
         <div className="row">
           <div className="col-12">
-            {!this.state.isHidden && <CreatePost />}
+            {!this.state.isHidden && 
+            <form onSubmit={(e => this.addPost(e))} onChange={(e => this.handleChange(e))}>
+              <CreatePost handleChange={this.handleChange}/>
+              <button type="submit" className="btn btn-primary btn-sm" disabled={!this.state.submitButton}>Create Post</button>
+            </form>}
           </div>
         </div>
       </div>
@@ -102,14 +122,14 @@ class Utilities extends React.Component {
   }
 }
 
-function CommentForm(props) {
+function CommentForm() {
   return (
-    <form>
+    <div>
       <div className="form-group">
         <input id="comment" type="text" className="form-control" placeholder="comment here!" />
       </div>
       <button type="submit" className="btn btn-primary btn-sm">Add Comment</button>
-    </form>
+    </div>
   );
 }
 
@@ -136,8 +156,7 @@ class Comments extends React.Component {
 
  addComment(e) {
    e.preventDefault();
-   let newComment = e.target.querySelector("#comment").value;
-   this.setState({comments: this.state.comments.concat([newComment])});
+   this.setState({comments: this.state.comments.concat([e.target.querySelector("#comment").value])});
    e.target.querySelector("#comment").value = '';
  }
 
@@ -168,7 +187,7 @@ class Post extends React.Component {
 
   toggleHidden() {
     this.setState({
-      isHidden: !this.state.isHidden
+      isHidden: !this.state.isHidden,
     });
   }
 
@@ -197,7 +216,7 @@ class Post extends React.Component {
           <Body body={this.props.post.body}/>
           <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.props.post.comments.length} 
             <span className="comment-cursor text-primary" onClick={this.toggleHidden.bind(this)}>
-              {this.pluralize('comment',this.props.post.comments.length)}
+              {this.pluralize('comment', this.props.post.comments.length)}
             </span>
           </span>
           {this.state.isHidden ? null : <Comments comments={this.props.post.comments}/>}
