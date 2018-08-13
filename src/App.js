@@ -181,7 +181,7 @@ class Post extends React.Component {
     this.state = {
       isHidden: true,
     };
-    this.date = 1533081600000;
+    this.date = Date.now();
     this.key = Date.now();
   }
 
@@ -192,8 +192,6 @@ class Post extends React.Component {
   }
 
   calculateDate(postDate) {
-    console.log(postDate);
-    console.log(Date.now());
     let daysSincePost = Math.floor((Date.now() - postDate) / 2.592e+8);
     return daysSincePost;
   }
