@@ -55,8 +55,8 @@ function CreatePost() {
 }
 
 class Utilities extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state ={
       isHidden: true,
     }
@@ -102,20 +102,14 @@ class Utilities extends React.Component {
   }
 }
 
-function Comments(props) {
-  console.log(props);
+function CommentForm(props) {
   return (
-    <div>
-      <ul>
-        <CommentList comments={props.comments}/>
-      </ul>
-      <form>
-        <div className="form-group">
-          <input type="text" className="form-control" placeholder="comment here!" />
-        </div>
-        <button type="submit" className="btn btn-primary btn-sm">Add Comment</button>
-      </form>
-    </div>
+    <form>
+      <div className="form-group">
+        <input id="comment" type="text" className="form-control" placeholder="comment here!" />
+      </div>
+      <button type="submit" className="btn btn-primary btn-sm">Add Comment</button>
+    </form>
   );
 }
 
@@ -131,14 +125,45 @@ function PostList(props){
   );
 }
 
+class Comments extends React.Component {
+ constructor(props) {
+   super(props);
+   this.state = {
+    isHidden: true,
+    comments: props.comments,
+  };
+ }
+
+ addComment(e) {
+   e.preventDefault();
+   let newComment = e.target.querySelector("#comment").value;
+   this.setState({comments: this.state.comments.concat([newComment])});
+   e.target.querySelector("#comment").value = '';
+ }
+
+ render() {
+  return (
+    <div>
+      <ul>
+        <CommentList comments={this.state.comments}/>
+      </ul>
+      <form onSubmit={(e => {this.addComment(e)})}>
+        <CommentForm />
+      </form>
+    </div>
+  );
+ }
+}
+
 class Post extends React.Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       isHidden: true,
     };
     this.date = Date.now();
+    this.key = Date.now();
   }
 
   toggleHidden() {
@@ -163,7 +188,7 @@ class Post extends React.Component {
 
   render() {
     return (
-      <div className="row mt-2 bg-light border rounded" key={this.props.key}>
+      <div className="row mt-2 bg-light border rounded">
         <div className="col-xs-12 col-sm-4 col-lg-3">
           <Image imgSrc={this.props.post.imgSrc}/>
         </div>
