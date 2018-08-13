@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import posts from './data.js';
+import { library }  from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
+library.add(far, fas)
 
 function Image(props) {
   return (
@@ -16,8 +22,8 @@ function Author(props) {
 
 function Title(props) {
   return (
-    <header className="font-weight-bold">
-      <span>{props.title}</span>
+    <header className="font-weight-bold d-inline-block">
+      <span>{props.title} |</span>
     </header>
   );
 }
@@ -180,9 +186,22 @@ class Post extends React.Component {
     super(props)
     this.state = {
       isHidden: true,
+      votes: 0,
     };
     this.date = Date.now();
     this.key = Date.now();
+  }
+
+  upVote() {
+    let update = this.state.votes + 1;
+    this.setState({votes: update});
+  }
+
+  downVote() {
+    if (this.state.votes > 0){
+      let update = this.state.votes - 1;
+      this.setState({votes: update});
+    }
   }
 
   toggleHidden() {
@@ -212,7 +231,11 @@ class Post extends React.Component {
           <Image imgSrc={this.props.post.imgSrc}/>
         </div>
         <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
-          <Title title={this.props.post.title}/>
+          <span><Title title={this.props.post.title} votes={this.state.votes}/>
+            <FontAwesomeIcon icon={fas.faFire} className="ml-2 text-success comment-cursor" onClick={this.upVote.bind(this)}/> 
+            <FontAwesomeIcon icon={fas.faPoo} className="ml-2 text-danger comment-cursor" onClick={this.downVote.bind(this)}/> 
+            <span className="ml-2">{this.state.votes}</span>
+          </span>
           <Body body={this.props.post.body}/>
           <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.props.post.comments.length} 
             <span className="comment-cursor text-primary" onClick={this.toggleHidden.bind(this)}>
