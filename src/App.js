@@ -65,12 +65,8 @@ class Utilities extends React.Component {
     this.state = {
       isHidden: true,
       submitButton: false,
-      sortBy: `Author`,
+      sortBy: `Popularity`,
     }
-  }
-
-  updateSortBy(e) {
-    this.setState({sortBy: e.target.innerText});
   }
 
   handleChange(e) {
@@ -107,12 +103,13 @@ class Utilities extends React.Component {
           </form>
           <div className="form-group dropdown pl-3">
             <a className="dropdown-toggle" href="/" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Sort By {this.state.sortBy}
+              <span>Sort By {this.props.orderBy}</span>
             </a>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <span className="dropdown-item" onClick={(e => this.updateSortBy(e))}>Author</span>
-              <span className="dropdown-item" onClick={(e => this.updateSortBy(e))}>Popularity</span>
-              <span className="dropdown-item" onClick={(e => this.updateSortBy(e))}>Date</span>
+              <span className="dropdown-item" propname="author" onClick={(e => this.props.sortPosts(e))}>Author</span>
+              <span className="dropdown-item" propname="votes" onClick={(e => this.props.sortPosts(e))}>Popularity</span>
+              <span className="dropdown-item" propname="date" onClick={(e => this.props.sortPosts(e))}>Date</span>
+              <span className="dropdown-item" propname="title" onClick={(e => this.props.sortPosts(e))}>Title</span>
             </div>
           </div>
         </div>
@@ -258,8 +255,26 @@ class App extends Component {
     super(props);
     this.state = {
      posts: posts,
+     postOrderBy: `Title`,
    };
    this.addPost = this.addPost.bind(this);
+   this.sortPosts = this.sortPosts.bind(this);
+  }
+
+  sortPosts(e, property = 'title') {
+    property = e.target.getAttribute('propname');
+    const sortArr = [];
+    const newPostOrder = [];
+    this.setState({postOrderBy: e.target.innerText});
+    this.state.posts.forEach((el, index) => {
+      let tempArr = [el[property], index];
+      sortArr.push(tempArr);
+    });
+    sortArr.sort();
+    sortArr.forEach((el, index) => {
+      newPostOrder.push(this.state.posts[el[1]]);
+    });
+    this.setState({posts: newPostOrder});
   }
 
   addPost(e) {
@@ -283,7 +298,7 @@ class App extends Component {
         <div className="container-fluid">
           <div className="row pb-5 pt-2 d-flex justify-content-center">
             <div className="col-11">
-              <Utilities addPost={this.addPost}/>
+              <Utilities addPost={this.addPost} sortPosts={this.sortPosts} orderBy={this.state.postOrderBy}/>
               {this.state.posts.map((post, index) => <Post post={post} key={index}/>)}
             </div>
           </div>
