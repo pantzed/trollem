@@ -145,12 +145,6 @@ function CommentList(props) {
   );
 }
 
-function PostList(props){
-  return (
-    props.posts.map((post, index) => <Post post={post} key={index}/>)
-  );
-}
-
 class Comments extends React.Component {
  constructor(props) {
    super(props);
@@ -232,9 +226,9 @@ class Post extends React.Component {
         </div>
         <div className="col-xs-12 col-sm-6 col-lg-7 p-3">
           <span><Title title={this.props.post.title} votes={this.state.votes}/>
-            <FontAwesomeIcon icon={fas.faFire} className="ml-2 text-success comment-cursor" onClick={this.upVote.bind(this)}/> 
-            <FontAwesomeIcon icon={fas.faPoo} className="ml-2 text-danger comment-cursor" onClick={this.downVote.bind(this)}/> 
-            <span className="ml-2">{this.state.votes}</span>
+            <FontAwesomeIcon icon={fas.faFire} className="ml-2 text-success comment-cursor unselectable" onClick={this.upVote.bind(this)}/> 
+            <FontAwesomeIcon icon={fas.faPoo} className="ml-2 text-danger comment-cursor unselectable" onClick={this.downVote.bind(this)}/> 
+            <span className="ml-2 unselectable">{this.state.votes}</span>
           </span>
           <Body body={this.props.post.body}/>
           <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.props.post.comments.length} 
@@ -250,6 +244,12 @@ class Post extends React.Component {
       </div>
     );
   }
+}
+
+function PostList(props){
+  return (
+    props.posts.map((post, index) => <Post post={post} key={index}/>)
+  );
 }
 
 class App extends Component {
