@@ -52,7 +52,7 @@ function CreatePost() {
         <input type="text" name="author" className="form-control form-control-sm" required/>
       </div>
       <div className="form-group">
-        <label htmlFor="imgUrl" className="font-weight-bold">Img URL</label>
+        <label htmlFor="imgSrc" className="font-weight-bold">Img URL</label>
         <input type="url" name="imgUrl" className="form-control form-control-sm" required/>
       </div>
     </div>
@@ -78,7 +78,7 @@ class Utilities extends React.Component {
       if (bool === false) {
         formValidity = false;
       }
-    })
+    });
     if (formValidity === true) {
       this.setState({submitButton: true});
     }
@@ -117,7 +117,7 @@ class Utilities extends React.Component {
         <div className="row">
           <div className="col-12">
             {!this.state.isHidden && 
-            <form onSubmit={(e => this.addPost(e))} onChange={(e => this.handleChange(e))}>
+            <form onSubmit={(e => this.props.addPost(e))} onChange={(e => this.handleChange(e))}>
               <CreatePost handleChange={this.handleChange}/>
               <button type="submit" className="btn btn-primary btn-sm" disabled={!this.state.submitButton}>Create Post</button>
             </form>}
@@ -181,6 +181,7 @@ class Post extends React.Component {
     this.state = {
       isHidden: true,
       votes: 0,
+      posts: props.post,
     };
     this.date = Date.now();
     this.key = Date.now();
@@ -246,13 +247,28 @@ class Post extends React.Component {
   }
 }
 
-function PostList(props){
-  return (
-    props.posts.map((post, index) => <Post post={post} key={index}/>)
-  );
-}
-
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+     posts: posts,
+   };
+   this.addPost = this.addPost.bind(this);
+  }
+
+  addPost(e) {
+    e.preventDefault();
+    let postObj = {};
+    const inputArr = Array.from(e.target.querySelectorAll('input'));
+    inputArr.forEach((el) => {
+      postObj[el.name] = el.value;
+    });
+    postObj['imgAlt'] = 'img alt';
+    postObj['comments'] = [];
+    this.setState({posts: this.state.posts.concat(postObj)});
+  }
+
   render() {
     return (
       <div>
@@ -262,8 +278,8 @@ class App extends Component {
         <div className="container-fluid">
           <div className="row pb-5 pt-2 d-flex justify-content-center">
             <div className="col-11">
-              <Utilities />
-              <PostList posts={posts}/>
+              <Utilities addPost={this.addPost}/>
+              {this.state.posts.map((post, index) => <Post post={post} key={index}/>)}
             </div>
           </div>
         </div>
