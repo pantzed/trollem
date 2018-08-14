@@ -65,7 +65,12 @@ class Utilities extends React.Component {
     this.state = {
       isHidden: true,
       submitButton: false,
+      sortBy: `Author`,
     }
+  }
+
+  updateSortBy(e) {
+    this.setState({sortBy: e.target.innerText});
   }
 
   handleChange(e) {
@@ -102,12 +107,12 @@ class Utilities extends React.Component {
           </form>
           <div className="form-group dropdown pl-3">
             <a className="dropdown-toggle" href="/" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Sort By Title
+              Sort By {this.state.sortBy}
             </a>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a className="dropdown-item" href="/">Author</a>
-              <a className="dropdown-item" href="/">Popularity</a>
-              <a className="dropdown-item" href="/">Post Date</a>
+              <span className="dropdown-item" onClick={(e => this.updateSortBy(e))}>Author</span>
+              <span className="dropdown-item" onClick={(e => this.updateSortBy(e))}>Popularity</span>
+              <span className="dropdown-item" onClick={(e => this.updateSortBy(e))}>Date</span>
             </div>
           </div>
         </div>
