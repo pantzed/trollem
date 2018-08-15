@@ -246,7 +246,7 @@ class Post extends React.Component {
           <Body body={this.props.post.body}/>
           <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.state.commentCount} 
             <span className="comment-cursor text-primary" onClick={this.toggleHidden.bind(this)}>
-              {this.pluralize('comment', this.props.post.comments.length)}
+              {this.pluralize('comment', this.state.commentCount)}
             </span>
           </span>
           {this.state.isHidden ? null : <Comments comments={this.state.comments} handleComments={this.handleComments}/>}
