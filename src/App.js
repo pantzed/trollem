@@ -152,23 +152,22 @@ class Comments extends React.Component {
    super(props);
    this.state = {
     isHidden: true,
-    comments: props.comments,
   };
  }
 
- addComment(e) {
-   e.preventDefault();
-   this.setState({comments: this.state.comments.concat([e.target.querySelector("#comment").value])});
-   e.target.querySelector("#comment").value = '';
- }
+//  addComment(e) {
+//    e.preventDefault();
+//    this.setState({comments: this.state.comments.concat([e.target.querySelector("#comment").value])});
+//  
+//  }
 
  render() {
   return (
     <div>
       <ul>
-        <CommentList comments={this.state.comments}/>
+        <CommentList comments={this.props.comments}/>
       </ul>
-      <form onSubmit={(e => {this.addComment(e)})}>
+      <form onSubmit={(e => {this.props.handleComments(e)})}>
         <CommentForm />
       </form>
     </div>
@@ -184,9 +183,20 @@ class Post extends React.Component {
       isHidden: true,
       votes: 0,
       posts: props.post,
+      comments: props.post.comments,
+      commentCount: props.post.comments.length,
     };
     this.date = Date.now();
     this.key = Date.now();
+    this.handleComments = this.handleComments.bind(this);
+  }
+
+  handleComments(event) {
+    event.preventDefault();
+    this.setState({comments: this.state.comments.concat(event.target.querySelector('input').value)});
+    const count = this.state.comments.length + 1;
+    this.setState({commentCount: count});
+    event.target.querySelector("#comment").value = '';
   }
 
   upVote() {
@@ -234,12 +244,12 @@ class Post extends React.Component {
             <span className="ml-2 unselectable">{this.state.votes}</span>
           </span>
           <Body body={this.props.post.body}/>
-          <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.props.post.comments.length} 
+          <span> {this.calculateDate(this.date)} {this.pluralize('day', this.calculateDate(this.date))} | {this.state.commentCount} 
             <span className="comment-cursor text-primary" onClick={this.toggleHidden.bind(this)}>
               {this.pluralize('comment', this.props.post.comments.length)}
             </span>
           </span>
-          {this.state.isHidden ? null : <Comments comments={this.props.post.comments}/>}
+          {this.state.isHidden ? null : <Comments comments={this.state.comments} handleComments={this.handleComments}/>}
         </div>
         <div className="col-xs-12 col-sm-2 p-3 text-right">
           <Author author={this.props.post.author}/>
